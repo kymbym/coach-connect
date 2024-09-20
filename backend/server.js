@@ -1,23 +1,23 @@
 const express = require("express");
-const dotenv = require("dotenv");
 const debug = require("debug")("coach-connect:server");
-
-dotenv.config();
+const usersController = require("./controllers/users");
+const coachesController = require("./controllers/coaches");
+const availabilitiesController = require("./controllers/availability");
+const { pool } = require("./db");
 
 const app = express();
 const port = 3000;
 
-const { Pool } = require("pg");
-const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-});
-
-pool.on("connect", () => {
-  debug("Connected to PostgreSQL");
+app.use((req, res, next) => {
+  req.pool = pool;
+  next();
 });
 
 app.use(express.json());
+app.use("/api/user", usersController);
+app.use("/api/coach", coachesController);
+app.use("/api/availability", availabilitiesController);
 
 app.listen(port, () => {
-  console.log(`Coach connect app listening on port ${port}`);
+  debug(`Coach Connect app listening on port ${port}`);
 });
