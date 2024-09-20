@@ -5,6 +5,7 @@ const {
   createAvailability,
   getAvailabilitiesByCoachId,
   updateAvailability,
+  deleteAvailability,
 } = require("../db/availability-db");
 const { verifyToken } = require("../middleware/verify-token");
 
@@ -63,6 +64,27 @@ router.put("/:availabilityId", verifyToken, async (req, res) => {
     return res.status(200).json(updatedAvailability);
   } catch (error) {
     console.error("error updating availability:", error);
+    return res.status(500).json({ error: error.message });
+  }
+});
+
+// coaches delete availability
+router.delete("/:availabilityId", verifyToken, async (req, res) => {
+  const coach_id = req.coach.id;
+  const availability_id = req.params.availabilityId;
+
+  try {
+    const deletedAvailability = await deleteAvailability(
+      coach_id,
+      availability_id,
+    );
+    if (deletedAvailability) {
+      return res.status(200).json(deletedAvailability);
+    } else {
+      return res.status(404).json({ error: "availability not found" });
+    }
+  } catch (error) {
+    console.error("error deleting availability:", error);
     return res.status(500).json({ error: error.message });
   }
 });
