@@ -4,6 +4,7 @@ const router = express.Router();
 const {
   createAvailability,
   getAvailabilitiesByCoachId,
+  updateAvailability,
 } = require("../db/availability-db");
 const { verifyToken } = require("../middleware/verify-token");
 
@@ -40,6 +41,29 @@ router.get("/:coachId", verifyToken, async (req, res) => {
   } catch (error) {
     console.error("error fetching availabilities:", error);
     res.status(500).json({ error: error.message });
+  }
+});
+
+// coaches update availability
+router.put("/:availabilityId", verifyToken, async (req, res) => {
+  const coach_id = req.coach.id;
+  const { date, start_time, end_time, max_participants } = req.body;
+  const availability_id = req.params.availabilityId;
+
+  try {
+    const updatedAvailability = await updateAvailability(
+      coach_id,
+      availability_id,
+      date,
+      start_time,
+      end_time,
+      max_participants,
+    );
+
+    return res.status(200).json(updatedAvailability);
+  } catch (error) {
+    console.error("error updating availability:", error);
+    return res.status(500).json({ error: error.message });
   }
 });
 
