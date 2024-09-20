@@ -4,7 +4,11 @@ const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createUser, getUserByEmail, getUserById } = require("../db/user-db");
-const { createBooking, getBookingsByUserId } = require("../db/booking-db");
+const {
+  createBooking,
+  getBookingsByUserId,
+  cancelUserBooking,
+} = require("../db/booking-db");
 const { verifyToken } = require("../middleware/verify-token");
 
 const SALT_LENGTH = 12;
@@ -90,22 +94,16 @@ router.get("/:userId", verifyToken, async (req, res) => {
 
 // user create booking
 router.post("/bookings", verifyToken, async (req, res) => {
-  const { coach_id, availability_id, start_time, end_time, status } = req.body;
+  const { availability_id } = req.body;
   const user_id = req.user.id;
 
   if (!user_id) {
     return res.status(401).json({ error: "unauthorized" });
   }
+  console.log(req.body);
 
   try {
-    const booking = await createBooking(
-      user_id,
-      coach_id,
-      availability_id,
-      start_time,
-      end_time,
-      status,
-    );
+    const booking = await createBooking(user_id, availability_id);
     res.status(201).json(booking);
   } catch (error) {
     console.error("error creating booking:", error);
@@ -126,6 +124,24 @@ router.get("/bookings/:userId", verifyToken, async (req, res) => {
     res.json(bookings);
   } catch (error) {
     console.error("error fetching bookings:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// user cancel booking
+router.delete("/bookings/:bookingId", verifyToken, async (req, res) => {
+  const user_id = req.user.id;
+  const { bookingId } = req.params;
+
+  try {
+    const deletedBooking = await cancelUserBooking(user_id, bookingId);
+    if (deletedBooking) {
+      return res.status(200).json(deletedBooking);
+    } else {
+      res.status(404).json({ error: "booking not found" });
+    }
+  } catch (error) {
+    console.error("error cancelling booking:", error);
     res.status(500).json({ error: error.message });
   }
 });

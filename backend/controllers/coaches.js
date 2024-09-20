@@ -8,6 +8,10 @@ const {
   getCoachByEmail,
   getCoachById,
 } = require("../db/coach-db");
+const {
+  getBookingsByCoachId,
+  cancelCoachBooking,
+} = require("../db/booking-db");
 const { verifyToken } = require("../middleware/verify-token");
 
 const SALT_LENGTH = 12;
@@ -104,6 +108,41 @@ router.get("/:coachId", verifyToken, async (req, res) => {
     }
     res.json({ coach });
   } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// coach get all bookings
+router.get("/bookings/:coachId", verifyToken, async (req, res) => {
+  const coach_id = req.coach.id;
+
+  if (!coach_id) {
+    return res.status(401).json({ error: "unauthorized" });
+  }
+
+  try {
+    const bookings = await getBookingsByCoachId(coach_id);
+    res.json(bookings);
+  } catch (error) {
+    console.error("error fetching bookings:", error);
+    res.status(500).json({ error: error.message });
+  }
+});
+
+// coach cancel booking
+router.delete("/bookings/:bookingId", verifyToken, async (req, res) => {
+  const coach_id = req.coach.id;
+  const { bookingId } = req.params;
+
+  try {
+    const deletedBooking = await cancelCoachBooking(coach_id, bookingId);
+    if (deletedBooking) {
+      return res.status(200).json(deletedBooking);
+    } else {
+      res.status(404).json({ error: "booking not found" });
+    }
+  } catch (error) {
+    console.error("error cancelling booking:", error);
     res.status(500).json({ error: error.message });
   }
 });
