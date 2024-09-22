@@ -6,8 +6,25 @@ const {
   getAvailabilitiesByCoachId,
   updateAvailability,
   deleteAvailability,
+  getAllAvailabilities,
 } = require("../db/availability-db");
 const { verifyToken } = require("../middleware/verify-token");
+
+// users get all availabilities
+router.get("/all", verifyToken, async (req, res) => {
+  if (!req.user) {
+    return res.status(401).json({ error: "unauthorized" });
+  }
+  if (req.user) {
+    try {
+      const availabilities = await getAllAvailabilities();
+      res.json(availabilities);
+    } catch (error) {
+      console.error("error fetching all availabilities:", error);
+      res.status(500).json({ error: error.message });
+    }
+  }
+});
 
 // coaches create availability
 router.post("/", verifyToken, async (req, res) => {
@@ -30,18 +47,18 @@ router.post("/", verifyToken, async (req, res) => {
 
 // coaches get all availabilities
 router.get("/:coachId", verifyToken, async (req, res) => {
-  const coach_id = req.coach.id;
-
-  if (!coach_id) {
+  if (!req.coach) {
     return res.status(401).json({ error: "unauthorized" });
   }
-
-  try {
-    const availabilities = await getAvailabilitiesByCoachId(coach_id);
-    res.json(availabilities);
-  } catch (error) {
-    console.error("error fetching availabilities:", error);
-    res.status(500).json({ error: error.message });
+  if (req.coach) {
+    const coach_id = req.coach.id;
+    try {
+      const availabilities = await getAvailabilitiesByCoachId(coach_id);
+      res.json(availabilities);
+    } catch (error) {
+      console.error("error fetching availabilities:", error);
+      res.status(500).json({ error: error.message });
+    }
   }
 });
 

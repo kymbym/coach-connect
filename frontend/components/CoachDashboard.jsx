@@ -1,11 +1,11 @@
-import CalendarComponent from "../components/Calendar";
+import CalendarComponent from "./Calendar";
 
-const CoachDashboard = ({ availabilities }) => {
+const CoachDashboard = () => {
   return (
     <>
       <h1>Coach Dashboard</h1>
       <p>Manage your availability:</p>
-      <CalendarComponent events={availabilities} />
+      <CalendarComponent isCoach={true} />
     </>
   );
 };

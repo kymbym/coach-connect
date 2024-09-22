@@ -7,6 +7,13 @@ const createAvailability = async (
   end_time,
   max_participants,
 ) => {
+  console.log("creating availability with:", {
+    coach_id,
+    date,
+    start_time,
+    end_time,
+    max_participants,
+  });
   try {
     const result = await pool.query(
       `INSERT INTO availability (coach_id, max_participants, date, start_time, end_time, created_at, updated_at)
@@ -17,6 +24,18 @@ const createAvailability = async (
     return result.rows[0];
   } catch (error) {
     console.error("error creating coach availability:", error);
+    throw error;
+  }
+};
+
+const getAllAvailabilities = async () => {
+  try {
+    const { rows: availabilities } = await pool.query(
+      `SELECT * FROM availability`,
+    );
+    return availabilities;
+  } catch (error) {
+    console.error("error fetching all availabilities:", error);
     throw error;
   }
 };
@@ -75,4 +94,5 @@ module.exports = {
   getAvailabilitiesByCoachId,
   updateAvailability,
   deleteAvailability,
+  getAllAvailabilities,
 };
