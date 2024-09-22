@@ -23,7 +23,7 @@ const getUserByEmail = async (email) => {
     );
 
     if (users.length === 0) {
-      throw Error("user not found");
+      return null;
     }
 
     return users[0];

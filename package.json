@@ -27,7 +27,7 @@
     "backend"
   ],
   "dependencies": {
+    "debug": "^4.3.7",
     "express": "^4.19.2"
   }
 }
-

@@ -9,6 +9,7 @@ const SignupForm = () => {
     email: "",
     name: "",
     password: "",
+    confirmPassword: "",
     isCoach: false,
     location: "",
     sports: [],
@@ -44,6 +45,11 @@ const SignupForm = () => {
   const handleSignup = async (e) => {
     e.preventDefault();
 
+    if (formData.password !== formData.confirmPassword) {
+      alert("passwords do not match!");
+      return;
+    }
+
     try {
       const response = formData.isCoach
         ? await createCoach(formData)
@@ -53,7 +59,7 @@ const SignupForm = () => {
 
       localStorage.setItem("token", token);
       setToken(token);
-      navigate(formData.isCoach ? "/coach-dashboard" : "user-dashboard")
+      navigate(formData.isCoach ? "/coach-dashboard" : "/user-dashboard")
     } catch (error) {
       console.error("signup error:", error.message);
       alert("signup failed");
@@ -97,6 +103,14 @@ const SignupForm = () => {
         name="password"
         placeholder="Password"
         value={formData.password}
+        onChange={handleChange}
+        required
+      />
+      <input
+        type="password"
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        value={formData.confirmPassword}
         onChange={handleChange}
         required
       />

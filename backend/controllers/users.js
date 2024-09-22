@@ -1,5 +1,5 @@
 const express = require("express");
-const debug = require("debug")("coach-connect:usersController");
+const debug = require("debug")("pulse:usersController");
 const router = express.Router();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");

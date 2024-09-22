@@ -1,5 +1,5 @@
 const express = require("express");
-const debug = require("debug")("coach-connect:availabilitiesController");
+const debug = require("debug")("pulse:availabilitiesController");
 const router = express.Router();
 const {
   createAvailability,
