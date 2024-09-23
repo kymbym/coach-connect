@@ -4,6 +4,8 @@ import LoginForm from "../components/LoginForm";
 import UserDashboard from "../components/UserDashboard";
 import CoachDashboard from "../components/CoachDashboard";
 import MainPage from "../components/MainPage";
+import CoachProfile from "../components/CoachProfile";
+import AllCoaches from "../components/AllCoaches";
 
 const App = () => {
   return (
@@ -13,6 +15,8 @@ const App = () => {
       <Route path="/login" element={<LoginForm />} />
       <Route path="/user-dashboard" element={<UserDashboard />} />
       <Route path="/coach-dashboard" element={<CoachDashboard />} />
+      <Route path="/user-dashboard" element={<AllCoaches />} />
+      <Route path="/user-dashboard/:coachId" element={<CoachProfile />} />
     </Routes>
   );
 };

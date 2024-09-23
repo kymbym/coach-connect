@@ -65,3 +65,34 @@ export const getAvailabilities = async (coachId) => {
     throw error;
   }
 };
+
+export const getCoachDetails = async () => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get("/api/coach", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("fetching all coaches details", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("error fetching coach details:", error.message);
+    throw error;
+  }
+};
+
+export const getCoachDetailsById = async (coachId) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(`/api/coach/${coachId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("error fetching coach details by id:", error.message);
+    throw error;
+  }
+};
