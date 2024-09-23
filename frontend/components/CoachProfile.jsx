@@ -27,7 +27,7 @@ const CoachProfile = () => {
           const formattedEvents = availabilities.map((availability) => ({
             start: new Date(availability.start_time),
             end: new Date(availability.end_time),
-            title: `Max participants: ${availability.max_participants}`,
+            max_participants: availability.max_participants,
           }));
           setEvents(formattedEvents);
         } catch (error) {

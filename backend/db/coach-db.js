@@ -52,6 +52,7 @@ const getCoachByEmail = async (email) => {
 };
 
 const getCoachById = async (id) => {
+  console.log("querying for coachid", id);
   try {
     const { rows: coaches } = await pool.query(
       `SELECT * FROM coaches where id = $1`,
@@ -65,4 +66,14 @@ const getCoachById = async (id) => {
   }
 };
 
-module.exports = { createCoach, getCoachByEmail, getCoachById };
+const getAllCoaches = async () => {
+  try {
+    const { rows: coaches } = await pool.query(`SELECT * FROM coaches`);
+    return coaches;
+  } catch (error) {
+    console.error("error fetching all coaches", error);
+    throw error;
+  }
+};
+
+module.exports = { createCoach, getCoachByEmail, getCoachById, getAllCoaches };

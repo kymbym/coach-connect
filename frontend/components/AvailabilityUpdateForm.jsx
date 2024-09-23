@@ -1,50 +1,41 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import moment from "moment";
 
-const AvailabilityForm = ({ onSubmit, onClose, initialStart, initialEnd }) => {
-  const [maxParticipants, setMaxParticipants] = useState("");
-  const [date, setDate] = useState(
-    initialStart ? moment(initialStart) : moment()
+const AvailabilityUpdateForm = ({ event, onClose, onUpdate }) => {
+  const [maxParticipants, setMaxParticipants] = useState(
+    event.max_participants
   );
-  const [startTime, setStartTime] = useState(
-    initialStart ? moment(initialStart) : moment()
-  );
-  const [endTime, setEndTime] = useState(
-    initialEnd ? moment(initialEnd) : moment()
-  );
-
-  useEffect(() => {
-    if (initialStart) {
-      setStartTime(moment(initialStart));
-      setEndTime(moment(initialEnd));
-      setDate(moment(initialStart));
-    }
-  }, [initialStart, initialEnd]);
+  const [date, setDate] = useState(moment(event.start));
+  const [startTime, setStartTime] = useState(moment(event.start));
+  const [endTime, setEndTime] = useState(moment(event.end));
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const start_time = moment(date)
-      .set({
+    const updatedData = {
+      max_participants: parseInt(maxParticipants),
+      date: date.toISOString(),
+      start_time: startTime.toISOString(),
+      end_time: endTime.toISOString(),
+    };
+    console.log("submitting updated data:", updatedData);
+    onUpdate(updatedData);
+  };
+
+  const handleDateChange = (e) => {
+    const newDate = moment(e.target.value);
+    setDate(newDate);
+    setStartTime(
+      moment(newDate).set({
         hours: startTime.hours(),
         minutes: startTime.minutes(),
       })
-      .toISOString();
-
-    const end_time = moment(date)
-      .set({
+    );
+    setEndTime(
+      moment(newDate).set({
         hours: endTime.hours(),
         minutes: endTime.minutes(),
       })
-      .toISOString();
-
-    const formData = {
-      max_participants: parseInt(maxParticipants),
-      date: date.toISOString(),
-      start_time,
-      end_time,
-    };
-    onSubmit(formData);
-    onClose();
+    );
   };
 
   return (
@@ -64,7 +55,7 @@ const AvailabilityForm = ({ onSubmit, onClose, initialStart, initialEnd }) => {
           <input
             type="date"
             value={date.format("YYYY-MM-DD")}
-            onChange={(e) => setDate(moment(e.target.value))}
+            onChange={handleDateChange}
             required
           />
         </label>
@@ -92,7 +83,7 @@ const AvailabilityForm = ({ onSubmit, onClose, initialStart, initialEnd }) => {
             required
           />
         </label>
-        <button type="submit">Create Event</button>
+        <button type="submit">Update Event</button>
         <button type="button" onClick={onClose}>
           Cancel
         </button>
@@ -101,4 +92,4 @@ const AvailabilityForm = ({ onSubmit, onClose, initialStart, initialEnd }) => {
   );
 };
 
-export default AvailabilityForm;
+export default AvailabilityUpdateForm;

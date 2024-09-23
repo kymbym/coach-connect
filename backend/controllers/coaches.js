@@ -7,6 +7,7 @@ const {
   createCoach,
   getCoachByEmail,
   getCoachById,
+  getAllCoaches,
 } = require("../db/coach-db");
 const {
   getBookingsByCoachId,
@@ -91,19 +92,29 @@ router.post("/login", async (req, res) => {
   }
 });
 
+// get all coaches
+router.get("/", verifyToken, async (req, res) => {
+  try {
+    const coaches = await getAllCoaches();
+    res.json({ coaches });
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
 // coaches verify token
 router.get("/:coachId", verifyToken, async (req, res) => {
-  const { id } = req.coach;
+  const { coachId } = req.params;
 
   try {
-    if (!req.coach) {
-      return res.status(401).json({ error: "unauthorized" });
-    }
-
-    const coach = await getCoachById(id);
+    // if (!req.coach) {
+    //   return res.status(401).json({ error: "unauthorized" });
+    // }
+    console.log("received coachid", coachId);
+    const coach = await getCoachById(coachId);
     console.log("coach object:", coach);
 
-    if (id === null) {
+    if (coachId === null) {
       return res.status(401).json({ error: "coach id does not exist!" });
     }
     res.json({ coach });

@@ -15,13 +15,13 @@ const createAvailability = async (
     max_participants,
   });
   try {
-    const result = await pool.query(
+    const { rows: availabilities } = await pool.query(
       `INSERT INTO availability (coach_id, max_participants, date, start_time, end_time, created_at, updated_at)
        VALUES ($1, $2, $3, $4, $5, now(), now())
        RETURNING *`,
       [coach_id, max_participants, date, start_time, end_time],
     );
-    return result.rows[0];
+    return availabilities[0];
   } catch (error) {
     console.error("error creating coach availability:", error);
     throw error;
@@ -46,6 +46,7 @@ const getAvailabilitiesByCoachId = async (coach_id) => {
       `SELECT * FROM availability WHERE coach_id = $1`,
       [coach_id],
     );
+    console.log("availabilities fetched availability db file:", availabilities);
     return availabilities;
   } catch (error) {
     console.error("error fetching availabilities by coach id:", error);
@@ -61,6 +62,14 @@ const updateAvailability = async (
   end_time,
   max_participants,
 ) => {
+  console.log("updating availability with values:", {
+    coach_id,
+    availability_id,
+    date,
+    start_time,
+    end_time,
+    max_participants,
+  });
   try {
     const { rows: availabilities } = await pool.query(
       `UPDATE availability

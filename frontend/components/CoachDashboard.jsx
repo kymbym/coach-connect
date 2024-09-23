@@ -14,9 +14,10 @@ const CoachDashboard = () => {
         try {
           const availabilities = await getAvailabilities(payload.id);
           const formattedEvents = availabilities.map((availability) => ({
+            id: availability.id,
             start: new Date(availability.start_time),
             end: new Date(availability.end_time),
-            title: `Max participants: ${availability.max_participants}`,
+            max_participants: availability.max_participants,
           }));
           setEvents(formattedEvents);
         } catch (error) {
@@ -31,7 +32,7 @@ const CoachDashboard = () => {
     <>
       <h1>Coach Dashboard</h1>
       <p>Manage your availability:</p>
-      <CalendarComponent events={events} isCoach={true} />
+      <CalendarComponent events={events} isCoach={true} setEvents={setEvents}/>
     </>
   );
 };

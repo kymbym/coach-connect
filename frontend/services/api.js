@@ -96,3 +96,40 @@ export const getCoachDetailsById = async (coachId) => {
     throw error;
   }
 };
+
+export const updateAvailability = async (availabilityId, formData) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.put(
+      `/api/coach/availability/${availabilityId}`,
+      { ...formData },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("error updating coach availability:", error);
+    throw error;
+  }
+};
+
+export const deleteAvailability = async (availabilityId) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.delete(
+      `/api/coach/availability/${availabilityId}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("error deleting coach availability:", error);
+    throw error;
+  }
+};

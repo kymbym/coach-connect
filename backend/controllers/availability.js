@@ -47,19 +47,24 @@ router.post("/", verifyToken, async (req, res) => {
 
 // coaches get all availabilities
 router.get("/:coachId", verifyToken, async (req, res) => {
-  if (!req.coach) {
-    return res.status(401).json({ error: "unauthorized" });
+  // if (!req.coach) {
+  //   return res.status(401).json({ error: "unauthorized" });
+  // }
+  // if (req.coach) {
+  const { coachId } = req.params;
+  console.log("requested coach id availability.js:", coachId);
+  try {
+    const availabilities = await getAvailabilitiesByCoachId(coachId);
+    console.log(
+      "fetched availabilities backend availability.js:",
+      availabilities,
+    );
+    res.json(availabilities);
+  } catch (error) {
+    console.error("error fetching availabilities:", error);
+    res.status(500).json({ error: error.message });
   }
-  if (req.coach) {
-    const coach_id = req.coach.id;
-    try {
-      const availabilities = await getAvailabilitiesByCoachId(coach_id);
-      res.json(availabilities);
-    } catch (error) {
-      console.error("error fetching availabilities:", error);
-      res.status(500).json({ error: error.message });
-    }
-  }
+  // }
 });
 
 // coaches update availability
@@ -77,7 +82,6 @@ router.put("/:availabilityId", verifyToken, async (req, res) => {
       end_time,
       max_participants,
     );
-
     return res.status(200).json(updatedAvailability);
   } catch (error) {
     console.error("error updating availability:", error);
