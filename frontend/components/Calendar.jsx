@@ -6,6 +6,7 @@ import AvailabilityForm from "./AvailabilityForm";
 import EventDetailsCard from "./AvailabilityEventCard";
 import {
   createAvailability,
+  createBooking,
   deleteAvailability,
   updateAvailability,
 } from "../services/api";
@@ -40,8 +41,8 @@ const CalendarComponent = ({ isCoach, events, setEvents }) => {
         end: new Date(newAvailability.end_time),
         max_participants: newAvailability.max_participants,
       };
+      console.log("new event created:", newEvent);
       setEvents([...events, newEvent]);
-      console.log(newAvailability);
       setShowAvailabilityForm(false);
       //   const updatedAvailabilities = await getAvailabilities();
       // setEvents(updatedAvailabilities);
@@ -102,6 +103,17 @@ const CalendarComponent = ({ isCoach, events, setEvents }) => {
     }
   };
 
+  const handleBook = async (availabilityId) => {
+    console.log("booking for availability id:", availabilityId);
+    try {
+      const booking = await createBooking(availabilityId);
+      console.log("booking successful:", booking);
+      alert("booking confirmed!");
+    } catch (error) {
+      console.error("error booking appointment:", error);
+    }
+  };
+
   return (
     <>
       <div style={{ height: "700px" }}>
@@ -134,6 +146,7 @@ const CalendarComponent = ({ isCoach, events, setEvents }) => {
             setShowUpdateForm(true);
             setShowEventDetailsForm(false);
           }}
+          onBook={handleBook}
         />
       )}
 

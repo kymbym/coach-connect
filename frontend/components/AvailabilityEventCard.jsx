@@ -1,4 +1,12 @@
-const EventDetailsCard = ({ event, onUpdate, onDelete, onClose, isCoach }) => {
+const EventDetailsCard = ({
+  event,
+  onUpdate,
+  onDelete,
+  onClose,
+  isCoach,
+  onBook,
+}) => {
+  console.log("event details card event", event);
   return (
     <div>
       <h2>Event Details</h2>
@@ -26,7 +34,7 @@ const EventDetailsCard = ({ event, onUpdate, onDelete, onClose, isCoach }) => {
         </>
       ) : (
         <>
-          <button onClick={() => {}}>Book Class</button>
+          <button onClick={() => onBook(event.id)}>Book</button>
           <button onClick={() => {}}>Cancel</button>
         </>
       )}

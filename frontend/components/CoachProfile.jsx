@@ -25,6 +25,7 @@ const CoachProfile = () => {
           const availabilities = await getAvailabilities(coachId);
           console.log("fetched availabilities:", availabilities);
           const formattedEvents = availabilities.map((availability) => ({
+            id: availability.id,
             start: new Date(availability.start_time),
             end: new Date(availability.end_time),
             max_participants: availability.max_participants,
