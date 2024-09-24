@@ -18,16 +18,7 @@ const verifyToken = async (req, res, next) => {
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     console.log("decoded token", decoded);
-
-    const coachResult = await pool.query(
-      "SELECT id, name, email FROM coaches WHERE id = $1",
-      [decoded.id],
-    );
-
-    if (coachResult.rows.length > 0) {
-      setCoach(req, coachResult.rows[0]);
-      return next();
-    }
+    console.log("decoded user id", decoded.id);
 
     const userResult = await pool.query(
       "SELECT id, name, email FROM users WHERE id = $1",
@@ -38,6 +29,16 @@ const verifyToken = async (req, res, next) => {
       setUser(req, userResult.rows[0]);
       return next();
     }
+    const coachResult = await pool.query(
+      "SELECT id, name, email FROM coaches WHERE id = $1",
+      [decoded.id],
+    );
+
+    if (coachResult.rows.length > 0) {
+      setCoach(req, coachResult.rows[0]);
+      return next();
+    }
+
     return res.status(401).json({ error: "invalid authorization token" });
   } catch (error) {
     console.error("token verification error:", error);

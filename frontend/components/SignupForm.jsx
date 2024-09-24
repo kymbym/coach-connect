@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createUser, createCoach } from "../services/api";
 import { tokenAtom } from "../store/atoms";
 import { useAtom } from "jotai";
+import { uploadFile } from "../services/api";
 
 const SignupForm = () => {
   const [formData, setFormData] = useState({
@@ -12,6 +13,7 @@ const SignupForm = () => {
     confirmPassword: "",
     isCoach: false,
     location: "",
+    profilepicture: "",
     sports: [],
     experience: "",
     rate_per_hour: "",
@@ -59,10 +61,24 @@ const SignupForm = () => {
 
       localStorage.setItem("token", token);
       setToken(token);
-      navigate(formData.isCoach ? "/coach-dashboard" : "/user-dashboard")
+      navigate(formData.isCoach ? "/coach-dashboard" : "/user-dashboard");
     } catch (error) {
       console.error("signup error:", error.message);
       alert("signup failed");
+    }
+  };
+
+  const handleProfilePictureChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    try {
+      alert("uploading profile picture...");
+      const uploadedImageUrl = await uploadFile(file);
+      setFormData({ ...formData, profilepicture: uploadedImageUrl });
+      console.log("uploaded profile picture url", uploadedImageUrl);
+    } catch (error) {
+      console.error("error uploading picture", error);
     }
   };
 
@@ -177,6 +193,13 @@ const SignupForm = () => {
             value={formData.bio}
             onChange={handleChange}
             required
+          />
+
+          <input
+            type="file"
+            name="profilepicture"
+            accept="image/*"
+            onChange={handleProfilePictureChange}
           />
         </>
       )}

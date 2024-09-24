@@ -1,4 +1,6 @@
 import axios from "axios";
+import AWS from "aws-sdk";
+import S3 from "aws-sdk/clients/s3";
 
 export const createUser = async (formData) => {
   const response = await axios.post("/api/user/signup", formData);
@@ -43,7 +45,7 @@ export const getAllAvailabilities = async () => {
     console.log("all availabilities api call:", response.data);
     return response.data;
   } catch (error) {
-    console.error("failed to fetch availabilities:", error);
+    console.error("error fetching availabilities:", error);
   }
 };
 
@@ -131,5 +133,72 @@ export const deleteAvailability = async (availabilityId) => {
   } catch (error) {
     console.error("error deleting coach availability:", error);
     throw error;
+  }
+};
+
+export const createBooking = async (availabilityId) => {
+  const token = localStorage.getItem("token");
+  try {
+    console.log("availability id create booking frontend:", availabilityId);
+    const response = await axios.post(
+      `/api/user/bookings`,
+      { availability_id: availabilityId },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    );
+    return response.data;
+  } catch (error) {
+    console.error("error booking appointment:", error);
+    throw error;
+  }
+};
+
+export const getBookingsByUserId = async (userId) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(`/api/user/bookings/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("error fetching coach details by id:", error.message);
+    throw error;
+  }
+};
+
+const S3_BUCKET = import.meta.env.VITE_S3_BUCKET;
+const REGION = import.meta.env.VITE_AWS_REGION;
+
+AWS.config.update({
+  region: REGION,
+  accessKeyId: import.meta.env.VITE_AWS_ACCESS_KEY,
+  secretAccessKey: import.meta.env.VITE_AWS_SECRET_ACCESS_KEY,
+});
+
+const s3 = new S3({
+  params: { Bucket: S3_BUCKET },
+  region: REGION,
+});
+
+export const uploadFile = async (file) => {
+  const params = {
+    Bucket: S3_BUCKET,
+    Key: file.name,
+    Body: file,
+  };
+
+  try {
+    const upload = await s3.putObject(params).promise();
+    console.log(upload);
+    const url = `https://${S3_BUCKET}.s3.${REGION}.amazonaws.com/${file.name}`;
+    return url;
+  } catch (error) {
+    console.error(error);
+    throw new Error("error uploading file", error.message);
   }
 };

@@ -94,8 +94,10 @@ router.get("/:userId", verifyToken, async (req, res) => {
 
 // user create booking
 router.post("/bookings", verifyToken, async (req, res) => {
+  console.log("decoded user id in users controllers", req.user?.id);
+  console.log("request body user create booking:", req.body);
   const { availability_id } = req.body;
-  const user_id = req.user.id;
+  const user_id = req.user?.id;
 
   if (!user_id) {
     return res.status(401).json({ error: "unauthorized" });
@@ -113,14 +115,14 @@ router.post("/bookings", verifyToken, async (req, res) => {
 
 // user get all bookings
 router.get("/bookings/:userId", verifyToken, async (req, res) => {
-  const user_id = req.user.id;
+  const { userId } = req.params;
 
-  if (!user_id) {
+  if (!userId) {
     return res.status(401).json({ error: "unauthorized" });
   }
 
   try {
-    const bookings = await getBookingsByUserId(user_id);
+    const bookings = await getBookingsByUserId(userId);
     res.json(bookings);
   } catch (error) {
     console.error("error fetching bookings:", error);

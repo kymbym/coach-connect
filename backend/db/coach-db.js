@@ -9,12 +9,13 @@ const createCoach = async (
   experience,
   rate_per_hour,
   bio,
+  profilepicture,
 ) => {
   try {
     const { rows: coaches } = await pool.query(
-      `INSERT into coaches (email, name, hashedpassword, location, sports, experience, rate_per_hour, bio, created_at, updated_at)
-      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, now(), now())
-      RETURNING id, email, name, location, sports, experience, rate_per_hour, bio, created_at, updated_at`,
+      `INSERT into coaches (email, name, hashedpassword, location, sports, experience, rate_per_hour, bio, profilepicture, created_at, updated_at)
+      VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, now(), now())
+      RETURNING id, email, name, location, sports, experience, rate_per_hour, bio, profilepicture, created_at, updated_at`,
       [
         email,
         name,
@@ -24,6 +25,7 @@ const createCoach = async (
         experience,
         rate_per_hour,
         bio,
+        profilepicture,
       ],
     );
     return coaches[0];

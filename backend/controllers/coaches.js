@@ -38,6 +38,7 @@ router.post("/signup", async (req, res) => {
     experience,
     rate_per_hour,
     bio,
+    profilepicture,
   } = req.body;
 
   try {
@@ -57,6 +58,7 @@ router.post("/signup", async (req, res) => {
       experience,
       rate_per_hour,
       bio,
+      profilepicture,
     );
     const token = createJWT(newCoach);
 

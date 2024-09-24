@@ -25,12 +25,15 @@ const AllCoaches = () => {
 
   return (
     <>
-      <h1>All Coaches</h1>
+      <h2>Our Coaches</h2>
       {coaches.map((coach) => {
         console.log("coach id mapped:", coach.id);
         return (
           <Link to={`/user-dashboard/${coach.id}`} key={coach.id}>
-            <CoachCard name={coach.name} />
+            <CoachCard
+              name={coach.name}
+              profilepicture={coach.profilepicture}
+            />
           </Link>
         );
       })}
