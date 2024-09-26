@@ -34,6 +34,7 @@ const getBookingsByUserId = async (user_id) => {
       WHERE b.user_id = $1`,
       [user_id],
     );
+    console.log("fetched bookings from booking db", bookings);
     return bookings;
   } catch (error) {
     console.error("error fetching bookings by user id:", error);
@@ -44,9 +45,27 @@ const getBookingsByUserId = async (user_id) => {
 const getBookingsByCoachId = async (coach_id) => {
   try {
     const { rows: bookings } = await pool.query(
-      `SELECT * FROM bookings WHERE coach_id = $1`,
+      `SELECT 
+        b.id,
+        b.availability_id,
+        b. user_id,
+        a.date,
+        a.start_time, 
+        a.end_time, 
+        a.max_participants,
+        a.coach_id,
+        u.name AS user_name, 
+        u.email AS user_email, 
+        c.name AS coach_name, 
+        c.email AS coach_email 
+       FROM bookings b
+       JOIN availability a ON b.availability_id = a.id
+       JOIN users u ON b.user_id = u.id
+       JOIN coaches c ON a.coach_id = c.id
+       WHERE b.coach_id = $1`,
       [coach_id],
     );
+    console.log("fetched bookings from booking db coaches", bookings);
     return bookings;
   } catch (error) {
     console.error("error fetching bookings by coach id:", error);

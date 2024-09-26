@@ -73,17 +73,17 @@ router.post("/login", async (req, res) => {
 
 // user verify token
 router.get("/:userId", verifyToken, async (req, res) => {
-  const { id } = req.user;
+  const { userId } = req.params;
 
   try {
-    if (!req.user) {
-      return res.status(401).json({ error: "unauthorized" });
-    }
+    // if (!req.user) {
+    //   return res.status(401).json({ error: "unauthorized" });
+    // }
 
-    const user = await getUserById(id);
+    const user = await getUserById(userId);
     console.log("user object:", user);
 
-    if (id === null) {
+    if (userId === null) {
       return res.status(401).json({ error: "user id does not exist!" });
     }
     res.json({ user });

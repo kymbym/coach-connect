@@ -48,56 +48,83 @@ const AvailabilityForm = ({ onSubmit, onClose, initialStart, initialEnd }) => {
   };
 
   return (
-    <>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Max Participants:
-          <input
-            type="number"
-            value={maxParticipants}
-            onChange={(e) => setMaxParticipants(e.target.value)}
-            required
-          />
+    <form
+      onSubmit={handleSubmit}
+      className="max-w-sm p-6 bg-purple-100 border border-purple-300 rounded-lg shadow dark:bg-purple-800 dark:border-purple-700 grid gap-6 mb-6 md:grid-cols-2"
+    >
+      <div>
+        <label className="fira-sans-bold block mb-2 text-sm text-gray-900 dark:text-white">
+          Max Participants
         </label>
-        <label>
-          Date:
-          <input
-            type="date"
-            value={date.format("YYYY-MM-DD")}
-            onChange={(e) => setDate(moment(e.target.value))}
-            required
-          />
+        <input
+          min="1"
+          placeholder="e.g: 5"
+          type="number"
+          value={maxParticipants}
+          onChange={(e) => setMaxParticipants(e.target.value)}
+          required
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div>
+        <label className="block mb-2 text-sm fira-sans-bold text-gray-900 dark:text-white">
+          Date
         </label>
-        <label>
-          Start Time:
-          <input
-            type="time"
-            value={startTime.format("HH:mm")}
-            onChange={(e) => {
-              const [hours, minutes] = e.target.value.split(":");
-              setStartTime(moment(date).set({ hours, minutes }));
-            }}
-            required
-          />
+        <input
+          min={moment().format("YYYY-MM-DD")}
+          type="date"
+          value={date.format("YYYY-MM-DD")}
+          onChange={(e) => setDate(moment(e.target.value))}
+          required
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div>
+        <label className="block mb-2 text-sm fira-sans-bold text-gray-900 dark:text-white">
+          Start Time
         </label>
-        <label>
-          End Time:
-          <input
-            type="time"
-            value={endTime.format("HH:mm")}
-            onChange={(e) => {
-              const [hours, minutes] = e.target.value.split(":");
-              setEndTime(moment(date).set({ hours, minutes }));
-            }}
-            required
-          />
+        <input
+          type="time"
+          value={startTime.format("HH:mm")}
+          onChange={(e) => {
+            const [hours, minutes] = e.target.value.split(":");
+            setStartTime(moment(date).set({ hours, minutes }));
+          }}
+          required
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div>
+        <label className="block mb-2 text-sm fira-sans-bold text-gray-900 dark:text-white">
+          End Time
         </label>
-        <button type="submit">Create Event</button>
-        <button type="button" onClick={onClose}>
-          Cancel
+        <input
+          type="time"
+          value={endTime.format("HH:mm")}
+          onChange={(e) => {
+            const [hours, minutes] = e.target.value.split(":");
+            setEndTime(moment(date).set({ hours, minutes }));
+          }}
+          required
+          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+        />
+      </div>
+      <div className="flex justify-between mt-4">
+        <button
+          type="submit"
+          className="text-white bg-purple-600 hover:bg-purple-400 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2"
+        >
+          Create Event
         </button>
-      </form>
-    </>
+        {/* <button
+          type="button"
+          onClick={onClose}
+          className="text-gray-700 bg-gray-200 hover:bg-gray-300 rounded-lg px-4 py-2"
+        >
+          Cancel
+        </button> */}
+      </div>
+    </form>
   );
 };
 

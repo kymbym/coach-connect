@@ -24,20 +24,13 @@ const AllCoaches = () => {
   }
 
   return (
-    <>
-      <h2>Our Coaches</h2>
-      {coaches.map((coach) => {
-        console.log("coach id mapped:", coach.id);
-        return (
-          <Link to={`/user-dashboard/${coach.id}`} key={coach.id}>
-            <CoachCard
-              name={coach.name}
-              profilepicture={coach.profilepicture}
-            />
-          </Link>
-        );
-      })}
-    </>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+      {coaches.map((coach) => (
+        <Link to={`/user-dashboard/${coach.id}`} key={coach.id}>
+          <CoachCard name={coach.name} profilepicture={coach.profilepicture} />
+        </Link>
+      ))}
+    </div>
   );
 };
 

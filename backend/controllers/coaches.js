@@ -127,14 +127,14 @@ router.get("/:coachId", verifyToken, async (req, res) => {
 
 // coach get all bookings
 router.get("/bookings/:coachId", verifyToken, async (req, res) => {
-  const coach_id = req.coach.id;
+  const { coachId } = req.params;
 
-  if (!coach_id) {
+  if (!coachId) {
     return res.status(401).json({ error: "unauthorized" });
   }
 
   try {
-    const bookings = await getBookingsByCoachId(coach_id);
+    const bookings = await getBookingsByCoachId(coachId);
     res.json(bookings);
   } catch (error) {
     console.error("error fetching bookings:", error);

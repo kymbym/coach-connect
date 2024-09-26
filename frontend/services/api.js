@@ -99,6 +99,21 @@ export const getCoachDetailsById = async (coachId) => {
   }
 };
 
+export const getUserDetailsById = async (userId) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(`/api/user/${userId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("error fetching coach details by id:", error.message);
+    throw error;
+  }
+};
+
 export const updateAvailability = async (availabilityId, formData) => {
   const token = localStorage.getItem("token");
   try {
@@ -166,8 +181,36 @@ export const getBookingsByUserId = async (userId) => {
     });
     return response.data;
   } catch (error) {
-    console.error("error fetching coach details by id:", error.message);
+    console.error("error fetching user bookings details by id:", error.message);
     throw error;
+  }
+};
+
+export const getBookingsByCoachId = async (coach_id) => {
+  const token = localStorage.getItem("token");
+  try {
+    const response = await axios.get(`/api/coach/bookings/${coach_id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("error fetching coach booking details by id:", error.message);
+    throw error;
+  }
+};
+
+export const sendEmail = async (email, subject, message) => {
+  try {
+    const response = await axios.post("/api/email", {
+      email: email,
+      subject: subject,
+      html: message,
+    });
+    console.log("email sent successfully:", response.data);
+  } catch (error) {
+    console.error("error sending email:", error);
   }
 };
 
