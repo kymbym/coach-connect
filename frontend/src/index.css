@@ -6,19 +6,14 @@
 @tailwind components;
 @tailwind utilities;
 
-.rbc-toolbar {
-    font-family: "fira-sans-regular";
-}
-
 .rbc-calendar {
     background-color: #F3F4F6;
-    font-family: "fira-sans-regular"
+    font-family: serif;
 }
 
 .rbc-header {
-    background-color: #6f42c1;
+    background-color: #a984ed;
     color: white;
-    font-family: "fira-sans-regular";
 }
 
 .rbc-today {

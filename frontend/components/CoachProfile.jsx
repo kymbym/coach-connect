@@ -61,7 +61,7 @@ const CoachProfile = () => {
               <h1 className="lilita-one-regular text-4xl text-black mt-4">
                 Coach {coach.name}
               </h1>
-              <p className="text-black mt-2 fira-sans-regular-italic text-xl">
+              <p className="text-black mt-2 fira-sans-regular-italic text-l">
                 {coach.bio}
               </p>
               <p className="fira-sans-regular text-black mt-4">

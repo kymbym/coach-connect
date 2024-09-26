@@ -1,10 +1,12 @@
 import CalendarComponent from "./Calendar";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { isValidToken, extractPayload } from "../utils/jwtUtils";
 import { getAvailabilities } from "../services/api";
 
 const CoachDashboard = () => {
   const [events, setEvents] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -29,13 +31,21 @@ const CoachDashboard = () => {
     }
   }, []);
 
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
     <>
-      <div className="container mx-auto p-4">
-        <h1 className="lilita-one-regular text-4xl font-bold text-white mb-6 text-center bg-gradient-to-r from-purple-300 to-pink-400 p-4 rounded-lg">
+      <div className="container mx-auto p-6">
+        <h1
+          className="lilita-one-regular text-4xl text-black mb-6 text-center bg-gradient-to-r from-purple-300 to-pink-400 p-4 rounded-lg cursor-pointer"
+          onClick={handleSignOut}
+        >
           Coach Dashboard
         </h1>
-        <p className="fira-sans-medium text-lg text-gray-700 mb-6">
+        <p className="fira-sans-bold text-2xl text-gray-800 mb-4 p-1">
           Manage your availabilities
         </p>
         <CalendarComponent

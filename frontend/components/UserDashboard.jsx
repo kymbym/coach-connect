@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import AllCoaches from "./AllCoaches";
 import { getBookingsByUserId } from "../services/api";
 import { isValidToken, extractPayload } from "../utils/jwtUtils";
 
 const UserDashboard = () => {
   const [bookings, setBookings] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -38,9 +40,17 @@ const UserDashboard = () => {
     }
   }, []);
 
+  const handleSignOut = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
-    <div className="container mx-auto p-6">
-      <h1 className="lilita-one-regular text-4xl font-bold text-white mb-6 text-center bg-gradient-to-r from-purple-300 to-pink-400 p-4 rounded-lg">
+    <div className="container mx-auto p-6 relative">
+      <h1
+        className="lilita-one-regular text-4xl text-black mb-6 text-center bg-gradient-to-r from-purple-300 to-pink-400 p-4 rounded-lg cursor-pointer"
+        onClick={handleSignOut}
+      >
         User Dashboard
       </h1>
       <p className="fira-sans-bold text-2xl text-gray-800 mb-4 p-1">

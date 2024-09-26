@@ -24,7 +24,7 @@ const AllCoaches = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-4">
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 p-4">
       {coaches.map((coach) => (
         <Link to={`/user-dashboard/${coach.id}`} key={coach.id}>
           <CoachCard name={coach.name} profilepicture={coach.profilepicture} />
