@@ -6,22 +6,22 @@ const coachesController = require("./controllers/coaches");
 const availabilitiesController = require("./controllers/availability");
 const emailsController = require("./controllers/emails");
 const { pool } = require("./db");
+const app = express();
+const cors = require("cors");
 
 const port = 3000;
 const corsOptions = {
   origin: "*",
   optionsSuccessStatus: 200,
 };
-app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
   req.pool = pool;
   next();
 });
 
-const app = express();
 app.use(express.urlencoded({ extended: true }));
-
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use("/api/user", usersController);
 app.use("/api/coach", coachesController);

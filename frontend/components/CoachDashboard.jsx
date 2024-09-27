@@ -40,7 +40,7 @@ const CoachDashboard = () => {
     <>
       <div className="container mx-auto p-6">
         <h1
-          className="lilita-one-regular text-4xl text-black mb-6 text-center bg-gradient-to-r from-purple-300 to-pink-400 p-4 rounded-lg cursor-pointer"
+          className="fira-sans-bold text-4xl text-black mb-6 text-center bg-gradient-to-r from-purple-300 to-pink-400 p-4 rounded-lg cursor-pointer"
           onClick={handleSignOut}
         >
           Coach Dashboard
