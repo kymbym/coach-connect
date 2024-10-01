@@ -47,4 +47,14 @@ If a coach cancels a class with participants already booked, an email notificati
 
 ## Next Steps
 
-- This project is still a work in progress (WIP), and there are many next steps to work towards. This represents just version 1 of the application.
+- This project is still a work in progress (WIP), and there are many next steps to work towards. This represents just version 1 of the application
+
+- Implement notifications or alert for when class bookings reach maximum capacity
+- Display bookings on the coach dashboard under each specific availability
+- Allow users to view all their bookings under each specific coach
+- Prevent coaches from reducing the maximum number of participants below the current number of bookings, with an alert for this condition
+- Update calendar colors based on different sports, etc
+- Filtering options by sport, coach name, and sorting availabilities
+- Add a bio section to the Coach Card
+- Allow users to reschedule and cancel their bookings, ensuring changes reflect on the coach profile
+- Ensure that changes to maximum participants are accurately reflected
