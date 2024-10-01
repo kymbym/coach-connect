@@ -47,7 +47,7 @@ If a coach cancels a class with participants already booked, an email notificati
 
 ## Next Steps
 
-- This project is still a work in progress (WIP), and there are many next steps to work towards. This represents just version 1 of the application
+***This project is still a work in progress (WIP), and there are many next steps to work towards. This represents just version 1 of the application***
 
 - Implement notifications or alert for when class bookings reach maximum capacity
 - Display bookings on the coach dashboard under each specific availability
